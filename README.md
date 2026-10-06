@@ -1,3 +1,18 @@
+# AI swiper (fork addition)
+
+`ai_swipe.py` reads each profile (photos + bio), asks Claude Haiku on Amazon Bedrock to judge it against `preferences.md`, then swipes like/pass at human pace. Every verdict is logged to `data/decisions.jsonl`.
+
+```bash
+uv venv -p 3.11 .venv && uv pip install -p .venv/bin/python "selenium>=4.20" "undetected-chromedriver>=3.5.5" setuptools requests pillow "anthropic[bedrock]" pydantic
+cp preferences.example.md preferences.md   # describe your type
+AWS_PROFILE=<bedrock profile> .venv/bin/python ai_swipe.py --dry-run   # judge only, you swipe
+AWS_PROFILE=<bedrock profile> .venv/bin/python ai_swipe.py --max 80
+```
+
+First run: log in yourself in the Chrome window; the session is kept in `chrome_profile/`.
+
+---
+
 # Tinderbotz
 **Consider giving a ⭐ if you like the project!**
 ## Project

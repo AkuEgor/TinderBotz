@@ -1,7 +1,7 @@
 # Selenium: automation of browser
 from selenium import webdriver
 # from webdriver_manager.chrome import ChromeDriverManager
-import undetected_chromedriver.v2 as uc
+import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -31,6 +31,19 @@ from tinderbotz.helpers.email_helper import EmailHelper
 from tinderbotz.helpers.constants_helper import Printouts
 from tinderbotz.helpers.xpaths import *
 from tinderbotz.addproxy import get_proxy_extension
+
+
+def _chrome_major_version():
+    # uc downloads the newest chromedriver by default; pin it to the installed Chrome
+    import subprocess
+    candidates = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "google-chrome", "chrome"]
+    for binary in candidates:
+        try:
+            out = subprocess.run([binary, "--version"], capture_output=True, text=True, timeout=10).stdout
+            return int(out.split()[-1].split(".")[0])
+        except (OSError, ValueError, IndexError, subprocess.SubprocessError):
+            continue
+    return None
 
 
 class Session:
@@ -112,7 +125,7 @@ class Session:
 
         # Getting the chromedriver from cache or download it from internet
         print("Getting ChromeDriver ...")
-        self.browser = uc.Chrome(options=options)  # ChromeDriverManager().install(),
+        self.browser = uc.Chrome(options=options, version_main=_chrome_major_version())
         # self.browser = webdriver.Chrome(options=options)
         # self.browser.set_window_size(1250, 750)
 
