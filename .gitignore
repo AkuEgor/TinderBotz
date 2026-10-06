@@ -6,5 +6,6 @@ tinderbotz.egg-info
 dist
 build
 __pycache__/
-chrome_profile/.venv
+chrome_profile/
+.venv
 preferences.md
